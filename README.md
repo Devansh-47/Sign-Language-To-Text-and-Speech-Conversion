@@ -54,12 +54,6 @@ We have collected images of different signs of different angles  for sign letter
 
 - in this method there are many loop holes like your hand must be ahead of clean soft background and that is in proper lightning condition then only this method will give good accurate results but in real world we dont get good background everywhere and we don’t get good lightning conditions too. 
 
-
-![2022-10-31](https://user-images.githubusercontent.com/99630855/201489669-1b262755-23f8-4e02-91ba-393aa6482620.png)
-![2022-10-31 (1)](https://user-images.githubusercontent.com/99630855/201489673-08a8dad8-30a4-426a-8f62-02190416191d.png)
-![2022-10-31 (2)](https://user-images.githubusercontent.com/99630855/201489684-50b2553b-0ec5-4253-912d-d317086e52c0.png)
- 
-
 So to overcome this situation we try different approaches then we reached at one interesting solution in which firstly we detect hand from frame using mediapipe and get the hand landmarks of hand present in that image then we draw and connect those landmarks in simple white image  
 
 Mediapipe Landmark System: 
@@ -82,6 +76,12 @@ Mediapipe Landmark System:
 Now we get this landmark points and draw it in plain white background using opencv library 
 
 -By doing this we tackle the situation of background and lightning conditions because the mediapipe labrary will give us landmark points in any background and mostly in any lightning conditions. 
+
+
+![2022-10-31](https://user-images.githubusercontent.com/99630855/201489669-1b262755-23f8-4e02-91ba-393aa6482620.png)
+![2022-10-31 (1)](https://user-images.githubusercontent.com/99630855/201489673-08a8dad8-30a4-426a-8f62-02190416191d.png)
+![2022-10-31 (2)](https://user-images.githubusercontent.com/99630855/201489684-50b2553b-0ec5-4253-912d-d317086e52c0.png)
+ 
 
 -we have collected 180 skeleton images of Alphabets from A to Z 
 
@@ -169,7 +169,7 @@ So when model will classify [aemnst] in one single class using mathematical oper
 ![2022-11-01 (4)](https://user-images.githubusercontent.com/99630855/201489697-168c8ca3-e4b3-4fc5-9e3a-97b239971c27.png)
 ![2022-11-01 (5)](https://user-images.githubusercontent.com/99630855/201489700-78b38657-16c0-45ac-88ec-ef06ada7870e.png)
 
-**Text and Speech Translation:**
+**Text To Speech Translation:**
 
 The model translates known gestures into words. we have used pyttsx3 library to convert the recognized words into the appropriate speech. The text-to-speech output is a simple workaround, but it's a useful feature because it simulates a real-life dialogue. 
 
