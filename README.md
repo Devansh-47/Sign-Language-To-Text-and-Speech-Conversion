@@ -11,6 +11,18 @@ ABSTRACT:
 In our project we basically focus on producing a model which can recognise Fingerspelling based hand gestures in order to form a complete word by combining each gesture. The gestures we aim to train are as given in the image below. 
 
 
+![Spanish_SL](https://user-images.githubusercontent.com/99630855/201489493-585ffe5c-f460-402a-b558-0d03370b4f92.jpg)
+
+
+
+![cnn](https://user-images.githubusercontent.com/99630855/201490154-1416d8ad-c7df-42a2-a296-5d56bad1d5c5.png)
+![pooling](https://user-images.githubusercontent.com/99630855/201490158-22a8a043-c2fe-4082-8fb5-a6c173061b58.jpg)
+
+
+![fullyConnectedLayer](https://user-images.githubusercontent.com/99630855/201490169-00b17306-e355-4d2e-88e5-3fbd4c7b3f17.png)
+
+
+
 2.Requirements: 
 
 More than 70 million deaf people around the world use sign languages to communicate. Sign language allows them to learn, work, access services, and be included in the communities.  
@@ -45,8 +57,7 @@ It uses electromechanical devices to provide exact hand configuration, and posit
 In vision-based methods, the computer webcam is the input device for observing the information of hands and/or fingers. The Vision Based methods require only a camera, thus realizing a natural interaction between humans and computers without the use of any extra devices, thereby reducing costs.  The main challenge of vision-based hand detection ranges from coping with the large variability of the human hand’s appearance due to a huge number of hand movements, to different skin-color possibilities as well as to the variations in viewpoints, scales, and speed of the camera capturing the scene. 
 
  
-
- 
+![Screenshot (224)](https://user-images.githubusercontent.com/99630855/201489523-0804652e-1a38-4242-ad69-8bfafb25f55a.png)
 
  
 
@@ -56,12 +67,32 @@ In this approach for hand detection, firstly we detect hand from image that is a
 
 We have collected images of different signs of different angles  for sign letter A to Z. 
 
- 
+ ![fdfScreenshot (227)](https://user-images.githubusercontent.com/99630855/201489564-04b0416d-f976-4946-80d3-01bab6897ce3.png)
 
- 
 
- 
 
+
+![2022-10-31](https://user-images.githubusercontent.com/99630855/201489669-1b262755-23f8-4e02-91ba-393aa6482620.png)
+![2022-10-31 (1)](https://user-images.githubusercontent.com/99630855/201489673-08a8dad8-30a4-426a-8f62-02190416191d.png)
+![2022-10-31 (2)](https://user-images.githubusercontent.com/99630855/201489684-50b2553b-0ec5-4253-912d-d317086e52c0.png)
+
+
+
+![2410344](https://user-images.githubusercontent.com/99630855/201489741-3649959e-df4d-4c32-898a-8f994be92ca2.png)
+
+![a12](https://user-images.githubusercontent.com/99630855/201490095-96402d48-b289-4ff3-9738-ed99ffcffca6.jpg)
+
+
+![a23](https://user-images.githubusercontent.com/99630855/201490105-87b17583-45c5-4e3b-82d1-0c9a6f98fc55.jpg)
+
+![7](https://user-images.githubusercontent.com/99630855/201490124-dc41d7ad-313f-47b7-b50c-0f9db3155e0d.jpg)
+
+
+![b11](https://user-images.githubusercontent.com/99630855/201490119-55ff1b2d-1826-4bc6-994e-8c8c528c8c35.jpg)
+
+![b16](https://user-images.githubusercontent.com/99630855/201490122-46d87005-ccb6-46ac-9dcf-185a569d6958.jpg)
+
+![127](https://user-images.githubusercontent.com/99630855/201490130-b0aae39b-a623-4cf8-b41d-0611c02637ed.jpg)
  
 
               
@@ -258,7 +289,11 @@ So when model will classify [aemnst] in one single class using mathematical oper
 
  
 
- 
+ ![2022-11-01 (2)](https://user-images.githubusercontent.com/99630855/201489689-3adeacf0-ca19-471d-8942-cf7effc6296a.png)
+![2022-11-01 (3)](https://user-images.githubusercontent.com/99630855/201489695-d14822c4-3a48-41c3-9cde-8fac4d835f65.png)
+![2022-11-01 (4)](https://user-images.githubusercontent.com/99630855/201489697-168c8ca3-e4b3-4fc5-9e3a-97b239971c27.png)
+![2022-11-01 (5)](https://user-images.githubusercontent.com/99630855/201489700-78b38657-16c0-45ac-88ec-ef06ada7870e.png)
+
 
 Inserting image...Inserting image...Inserting image...Inserting image... 
 
@@ -298,90 +333,22 @@ Programming Language: Python 3.9 5
 
 Python libraries: OpenCV, NumPy, Keras,mediapipe,Tensorflow 
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
 7.System Diagrams: 
 
 7.1 System Flowchart: 
+![system flowchart](https://user-images.githubusercontent.com/99630855/201490238-224f65aa-071f-473a-8c23-a9d60e0a47d8.png)
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
 7.2. Use-case diagram: 
-
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/99630855/201490218-85f4c194-0496-4dfb-b920-e486256bd6b7.png)
  
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 7.3 DFD diagram: 
-
- 
-
- 
-
- 
-
- 
-
- 
-
+![Flowcharts (2)](https://user-images.githubusercontent.com/99630855/201490221-f543fa6d-75ba-4db0-bc35-ee8c06e25018.png)
+![Flowcharts (1)](https://user-images.githubusercontent.com/99630855/201490226-966bcc44-8149-433d-ab3b-b0a23deb1c91.png)
  
 
 7.4 Sequence diagram: 
-
- 
-
- 
-
- 
+![sequence2](https://user-images.githubusercontent.com/99630855/201490230-b903c365-7a4c-4972-8268-5687060b9cd0.png)
 
  
