@@ -86,7 +86,8 @@ Now we get this landmark points and draw it in plain white background using open
 ![2022-10-31](https://user-images.githubusercontent.com/99630855/201489669-1b262755-23f8-4e02-91ba-393aa6482620.png)
 ![2022-10-31 (1)](https://user-images.githubusercontent.com/99630855/201489673-08a8dad8-30a4-426a-8f62-02190416191d.png)
 
- 
+ ![hhee2022-10-31 (2)](https://user-images.githubusercontent.com/99630855/201496302-f67b360a-1ef5-4486-8ff7-cc56cee30b97.png)
+
 
 -we have collected 180 skeleton images of Alphabets from A to Z 
 
