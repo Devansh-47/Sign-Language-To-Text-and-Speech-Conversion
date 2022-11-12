@@ -3,6 +3,11 @@
 **ABSTRACT:** 
 
  Sign language is one of the oldest and most natural form of language for communication, hence we have come up with a real time method using neural networks for finger spelling based American sign language. Automatic human gesture recognition from camera images is an interesting topic for developing vision. We propose a convolution neural network (CNN) method to recognize hand gestures of human actions from an image captured by camera. The purpose is to recognize hand gestures of human task activities from a camera image. The position of hand and orientation are applied to obtain the training and testing data for the CNN. The hand is first passed through a filter and after the filter is applied where the hand is passed through a classifier which predicts the class of the hand gestures. Then the calibrated images are used to train CNN. 
+ 
+ 
+ https://user-images.githubusercontent.com/99630855/201496149-e7004402-16b2-4d72-8e1a-ff20c422c565.mp4
+
+
 
 **Introduction:**
 
@@ -80,7 +85,7 @@ Now we get this landmark points and draw it in plain white background using open
 
 ![2022-10-31](https://user-images.githubusercontent.com/99630855/201489669-1b262755-23f8-4e02-91ba-393aa6482620.png)
 ![2022-10-31 (1)](https://user-images.githubusercontent.com/99630855/201489673-08a8dad8-30a4-426a-8f62-02190416191d.png)
-![2022-10-31 (2)](https://user-images.githubusercontent.com/99630855/201489684-50b2553b-0ec5-4253-912d-d317086e52c0.png)
+
  
 
 -we have collected 180 skeleton images of Alphabets from A to Z 
