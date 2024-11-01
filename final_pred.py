@@ -49,6 +49,7 @@ class Application:
 
         for i in ascii_uppercase:
             self.ct[i] = 0
+        print("Loaded model from disk")
 
 
         self.root = tk.Tk()
@@ -208,6 +209,86 @@ class Application:
                 self.panel5.config(text=self.str, font=("Courier", 30), wraplength=1025)
         except Exception:
             print(Exception.__traceback__)
+            hands = hd.findHands(cv2image, draw=False, flipType=True)
+            cv2image_copy=np.array(cv2image)
+            cv2image = cv2.cvtColor(cv2image, cv2.COLOR_BGR2RGB)
+            self.current_image = Image.fromarray(cv2image)
+            imgtk = ImageTk.PhotoImage(image=self.current_image)
+            self.panel.imgtk = imgtk
+            self.panel.config(image=imgtk)
+
+            if hands:
+                # #print(" --------- lmlist=",hands[1])
+                hand = hands[0]
+                x, y, w, h = hand['bbox']
+                image = cv2image_copy[y - offset:y + h + offset, x - offset:x + w + offset]
+
+                white = cv2.imread("C:\\Users\\devansh raval\\PycharmProjects\\pythonProject\\white.jpg")
+                # img_final=img_final1=img_final2=0
+
+                handz = hd2.findHands(image, draw=False, flipType=True)
+                print(" ", self.ccc)
+                self.ccc += 1
+                if handz:
+                    hand = handz[0]
+                    self.pts = hand['lmList']
+                    # x1,y1,w1,h1=hand['bbox']
+
+                    os = ((400 - w) // 2) - 15
+                    os1 = ((400 - h) // 2) - 15
+                    for t in range(0, 4, 1):
+                        cv2.line(white, (self.pts[t][0] + os, self.pts[t][1] + os1), (self.pts[t + 1][0] + os, self.pts[t + 1][1] + os1),
+                                 (0, 255, 0), 3)
+                    for t in range(5, 8, 1):
+                        cv2.line(white, (self.pts[t][0] + os, self.pts[t][1] + os1), (self.pts[t + 1][0] + os, self.pts[t + 1][1] + os1),
+                                 (0, 255, 0), 3)
+                    for t in range(9, 12, 1):
+                        cv2.line(white, (self.pts[t][0] + os, self.pts[t][1] + os1), (self.pts[t + 1][0] + os, self.pts[t + 1][1] + os1),
+                                 (0, 255, 0), 3)
+                    for t in range(13, 16, 1):
+                        cv2.line(white, (self.pts[t][0] + os, self.pts[t][1] + os1), (self.pts[t + 1][0] + os, self.pts[t + 1][1] + os1),
+                                 (0, 255, 0), 3)
+                    for t in range(17, 20, 1):
+                        cv2.line(white, (self.pts[t][0] + os, self.pts[t][1] + os1), (self.pts[t + 1][0] + os, self.pts[t + 1][1] + os1),
+                                 (0, 255, 0), 3)
+                    cv2.line(white, (self.pts[5][0] + os, self.pts[5][1] + os1), (self.pts[9][0] + os, self.pts[9][1] + os1), (0, 255, 0),
+                             3)
+                    cv2.line(white, (self.pts[9][0] + os, self.pts[9][1] + os1), (self.pts[13][0] + os, self.pts[13][1] + os1), (0, 255, 0),
+                             3)
+                    cv2.line(white, (self.pts[13][0] + os, self.pts[13][1] + os1), (self.pts[17][0] + os, self.pts[17][1] + os1),
+                             (0, 255, 0), 3)
+                    cv2.line(white, (self.pts[0][0] + os, self.pts[0][1] + os1), (self.pts[5][0] + os, self.pts[5][1] + os1), (0, 255, 0),
+                             3)
+                    cv2.line(white, (self.pts[0][0] + os, self.pts[0][1] + os1), (self.pts[17][0] + os, self.pts[17][1] + os1), (0, 255, 0),
+                             3)
+
+                    for i in range(21):
+                        cv2.circle(white, (self.pts[i][0] + os, self.pts[i][1] + os1), 2, (0, 0, 255), 1)
+
+                    res=white
+                    self.predict(res)
+
+                    self.current_image2 = Image.fromarray(res)
+
+                    imgtk = ImageTk.PhotoImage(image=self.current_image2)
+
+                    self.panel2.imgtk = imgtk
+                    self.panel2.config(image=imgtk)
+
+                    self.panel3.config(text=self.current_symbol, font=("Courier", 30))
+
+                    #self.panel4.config(text=self.word, font=("Courier", 30))
+
+
+
+                    self.b1.config(text=self.word1, font=("Courier", 20), wraplength=825, command=self.action1)
+                    self.b2.config(text=self.word2, font=("Courier", 20), wraplength=825,  command=self.action2)
+                    self.b3.config(text=self.word3, font=("Courier", 20), wraplength=825,  command=self.action3)
+                    self.b4.config(text=self.word4, font=("Courier", 20), wraplength=825,  command=self.action4)
+
+            self.panel5.config(text=self.str, font=("Courier", 30), wraplength=1025)
+        except Exception:
+            print("==", traceback.format_exc())
         finally:
             self.root.after(1, self.video_loop)
 
@@ -287,6 +368,8 @@ class Application:
         if pl in l:
             if (self.pts[5][0] < self.pts[4][0]):
                 ch1 = 0
+                print("++++++++++++++++++")
+                # print("00000")
 
         # condition for [c0][aemnst]
         l = [[0, 0], [0, 6], [0, 2], [0, 5], [0, 1], [0, 7], [5, 2], [7, 6], [7, 1]]
@@ -304,7 +387,6 @@ class Application:
                 ch1 = 2
 
 
-
         # condition for [gh][bdfikruvw]
         l = [[1, 4], [1, 5], [1, 6], [1, 3], [1, 0]]
         pl = [ch1, ch2]
@@ -316,14 +398,12 @@ class Application:
 
 
 
-
         # con for [gh][l]
         l = [[4, 6], [4, 1], [4, 5], [4, 3], [4, 7]]
         pl = [ch1, ch2]
         if pl in l:
             if self.pts[4][0] > self.pts[0][0]:
                 ch1 = 3
-
 
         # con for [gh][pqz]
         l = [[5, 3], [5, 0], [5, 7], [5, 4], [5, 2], [5, 1], [5, 5]]
@@ -429,6 +509,7 @@ class Application:
 
 
         # condition for [yj][x]
+        print("2222  ch1=+++++++++++++++++", ch1, ",", ch2)
         l = [[7, 2]]
         pl = [ch1, ch2]
         if pl in l:
@@ -484,6 +565,7 @@ class Application:
 
         # con for [d][pqz]
         fg = 19
+        # print("_________________ch1=",ch1," ch2=",ch2)
         l = [[5, 0], [3, 4], [3, 0], [3, 1], [3, 5], [5, 5], [5, 4], [5, 1], [7, 6]]
         pl = [ch1, ch2]
         if pl in l:
@@ -705,12 +787,12 @@ class Application:
 
 
     def destructor(self):
-
         print(self.ten_prev_char)
         self.root.destroy()
         self.vs.release()
         cv2.destroyAllWindows()
 
 
+print("Starting Application...")
 
 (Application()).root.mainloop()
