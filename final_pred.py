@@ -15,6 +15,7 @@ hd = HandDetector(maxHands=1)
 hd2 = HandDetector(maxHands=1)
 import tkinter as tk
 from PIL import Image, ImageTk
+from googletrans import Translator
 
 offset=29
 
@@ -106,6 +107,17 @@ class Application:
         self.clear.place(x=1205, y=630)
         self.clear.config(text="Clear", font=("Courier", 20), wraplength=100, command=self.clear_fun)
 
+        self.translate = tk.Button(self.root)
+        self.translate.place(x=1100, y=630)
+        self.translate.config(text="Translate", font=("Courier", 20), wraplength=100, command=self.translate_fun)
+
+        self.panel6 = tk.Label(self.root)  # Translated Sentence
+        self.panel6.place(x=400, y=662)
+
+        self.T5 = tk.Label(self.root)
+        self.T5.place(x=10, y=662)
+        self.T5.config(text="Translated :", font=("Courier", 30, "bold"))
+
 
 
 
@@ -122,7 +134,11 @@ class Application:
         self.word3 = " "
         self.word4 = " "
 
-        self.video_loop()
+    def translate_fun(self):
+        translator = Translator()
+        if len(self.str.strip()) > 0:
+            translation = translator.translate(self.str, dest='ta')
+            self.panel6.config(text=translation.text, font=("Courier", 30), wraplength=1025)
 
     def video_loop(self):
         try:
@@ -188,7 +204,7 @@ class Application:
                             res=white
                             self.predict(res)
 
-                            self.current_image2 = Image.fromarray(res)
+                            self.current_image2 = Image.fromarray(cv2.cvtColor(cv2.resize(image, (400,400)), cv2.COLOR_BGR2RGB))
 
                             imgtk = ImageTk.PhotoImage(image=self.current_image2)
 
@@ -268,7 +284,7 @@ class Application:
                     res=white
                     self.predict(res)
 
-                    self.current_image2 = Image.fromarray(res)
+                    self.current_image2 = Image.fromarray(cv2.cvtColor(cv2.resize(image, (400,400)), cv2.COLOR_BGR2RGB))
 
                     imgtk = ImageTk.PhotoImage(image=self.current_image2)
 
