@@ -1,0 +1,11 @@
+# Environment configuration based on Python 3.10.0
+# For the final_pred.py file
+numpy==1.26.4
+tensorflow==2.16.1
+tf-keras==2.16.0
+opencv-python==4.5.5.64
+cvzone==1.6.1
+mediapipe==0.10.11
+pyttsx3==2.90
+pyenchant==3.2.2
+Pillow==9.2.0

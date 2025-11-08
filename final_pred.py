@@ -223,7 +223,7 @@ class Application:
                 x, y, w, h = hand['bbox']
                 image = cv2image_copy[y - offset:y + h + offset, x - offset:x + w + offset]
 
-                white = cv2.imread("C:\\Users\\devansh raval\\PycharmProjects\\pythonProject\\white.jpg")
+                white = cv2.imread("white.jpg")
                 # img_final=img_final1=img_final2=0
 
                 handz = hd2.findHands(image, draw=False, flipType=True)
