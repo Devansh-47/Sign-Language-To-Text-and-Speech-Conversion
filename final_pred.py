@@ -52,59 +52,148 @@ class Application:
         print("Loaded model from disk")
 
 
+        # ---------- UI WINDOW ----------
         self.root = tk.Tk()
-        self.root.title("Sign Language To Text Conversion")
-        self.root.protocol('WM_DELETE_WINDOW', self.destructor)
-        self.root.geometry("1300x700")
+        self.root.title("Sign Language to Text & Speech")
+        self.root.protocol("WM_DELETE_WINDOW", self.destructor)
+        self.root.geometry("1280x720")
+        self.root.configure(bg="#101820")      # dark bluish background
+        self.root.resizable(True, True)
+        # ---------- TITLE ----------
+        self.T = tk.Label(
+            self.root,
+            text="Sign Language To Text Conversion",
+            font=("Helvetica", 28, "bold"),
+            bg="#101820",
+            fg="#ffffff"
+        )
+        self.T.place(x=40, y=20)
 
-        self.panel = tk.Label(self.root)
-        self.panel.place(x=100, y=3, width=480, height=640)
+        # ---------- CAMERA PANEL (LEFT) ----------
+        self.panel = tk.Label(
+            self.root,
+            bg="#1e272e",
+            bd=2,
+            relief="ridge"
+        )
+        self.panel.place(x=60, y=80, width=480, height=360)
 
-        self.panel2 = tk.Label(self.root)  # initialize image panel
-        self.panel2.place(x=700, y=115, width=400, height=400)
+        # ---------- DRAWING PANEL (RIGHT) ----------
+        self.panel2 = tk.Label(
+            self.root,
+            bg="#ffffff",
+            bd=2,
+            relief="ridge"
+        )  # initialize image panel
+        self.panel2.place(x=680, y=80, width=400, height=400)
 
-        self.T = tk.Label(self.root)
-        self.T.place(x=60, y=5)
-        self.T.config(text="Sign Language To Text Conversion", font=("Courier", 30, "bold"))
+        # ---------- CURRENT CHARACTER ----------
+        self.T1 = tk.Label(
+            self.root,
+            text="Character :",
+            font=("Helvetica", 20, "bold"),
+            bg="#101820",
+            fg="#ffffff"
+        )
+        self.T1.place(x=60, y=470)
 
-        self.panel3 = tk.Label(self.root)  # Current Symbol
-        self.panel3.place(x=280, y=585)
+        self.panel3 = tk.Label(
+            self.root,
+            text="",
+            font=("Helvetica", 24, "bold"),
+            bg="#101820",
+            fg="#00e676"
+        )
+        self.panel3.place(x=210, y=468)
 
-        self.T1 = tk.Label(self.root)
-        self.T1.place(x=10, y=580)
-        self.T1.config(text="Character :", font=("Courier", 30, "bold"))
+        # ---------- SENTENCE ----------
+        self.T3 = tk.Label(
+            self.root,
+            text="Sentence :",
+            font=("Helvetica", 20, "bold"),
+            bg="#101820",
+            fg="#ffffff"
+        )
+        self.T3.place(x=60, y=515)
 
-        self.panel5 = tk.Label(self.root)  # Sentence
-        self.panel5.place(x=260, y=632)
+        self.panel5 = tk.Label(
+            self.root,
+            text="",
+            font=("Helvetica", 20),
+            bg="#101820",
+            fg="#ffffff",
+            anchor="w",
+            justify="left",
+            wraplength=900
+        )
+        self.panel5.place(x=210, y=515, width=1000)
 
-        self.T3 = tk.Label(self.root)
-        self.T3.place(x=10, y=632)
-        self.T3.config(text="Sentence :", font=("Courier", 30, "bold"))
+        # ---------- SUGGESTIONS ----------
+        self.T4 = tk.Label(
+            self.root,
+            text="Suggestions :",
+            font=("Helvetica", 20, "bold"),
+            bg="#101820",
+            fg="#ff5252"
+        )
+        self.T4.place(x=60, y=570)
 
-        self.T4 = tk.Label(self.root)
-        self.T4.place(x=10, y=700)
-        self.T4.config(text="Suggestions :", fg="red", font=("Courier", 30, "bold"))
+        button_style = {
+            "font": ("Helvetica", 16, "bold"),
+            "bg": "#263238",
+            "fg": "#ffffff",
+            "activebackground": "#37474f",
+            "activeforeground": "#ffffff",
+            "bd": 0,
+            "relief": "flat",
+            "width": 8,
+            "height": 1
+        }
 
+        self.b1 = tk.Button(self.root, **button_style, text="")
+        self.b1.place(x=260, y=565)
 
-        self.b1=tk.Button(self.root)
-        self.b1.place(x=390,y=700)
+        self.b2 = tk.Button(self.root, **button_style, text="")
+        self.b2.place(x=400, y=565)
 
-        self.b2 = tk.Button(self.root)
-        self.b2.place(x=590, y=700)
+        self.b3 = tk.Button(self.root, **button_style, text="")
+        self.b3.place(x=540, y=565)
 
-        self.b3 = tk.Button(self.root)
-        self.b3.place(x=790, y=700)
+        self.b4 = tk.Button(self.root, **button_style, text="")
+        self.b4.place(x=680, y=565)
 
-        self.b4 = tk.Button(self.root)
-        self.b4.place(x=990, y=700)
+        # ---------- CONTROL BUTTONS (CLEAR / SPEAK) ----------
+        self.clear = tk.Button(
+            self.root,
+            text="Clear",
+            font=("Helvetica", 16, "bold"),
+            bg="#ff7043",
+            fg="#ffffff",
+            activebackground="#ff8a65",
+            activeforeground="#ffffff",
+            bd=0,
+            relief="flat",
+            padx=20,
+            pady=5,
+            command=self.clear_fun
+        )
+        self.clear.place(x=900, y=620)
 
-        self.speak = tk.Button(self.root)
-        self.speak.place(x=1305, y=630)
-        self.speak.config(text="Speak", font=("Courier", 20), wraplength=100, command=self.speak_fun)
-
-        self.clear = tk.Button(self.root)
-        self.clear.place(x=1205, y=630)
-        self.clear.config(text="Clear", font=("Courier", 20), wraplength=100, command=self.clear_fun)
+        self.speak = tk.Button(
+            self.root,
+            text="Speak",
+            font=("Helvetica", 16, "bold"),
+            bg="#66bb6a",
+            fg="#ffffff",
+            activebackground="#81c784",
+            activeforeground="#ffffff",
+            bd=0,
+            relief="flat",
+            padx=20,
+            pady=5,
+            command=self.speak_fun
+        )
+        self.speak.place(x=1030, y=620)
 
 
 
