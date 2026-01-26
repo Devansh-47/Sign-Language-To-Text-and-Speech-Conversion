@@ -1,4 +1,4 @@
-import cv2
+    import cv2
 
 print("Testing camera access...")
 cap = cv2.VideoCapture(0)
