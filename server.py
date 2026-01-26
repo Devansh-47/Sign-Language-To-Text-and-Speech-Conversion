@@ -56,11 +56,14 @@ def distance(x, y):
 def predict_sign(image, pts, w, h):
     """
     Predict sign language character from hand landmarks
-    EXACT COPY from final_pred.py - NO MODIFICATIONS
+    NORMALIZED to match final_pred.py pixel-for-pixel
     """
+    # CRITICAL: Load fresh copy for each request (FastAPI is async - no shared state)
     white = cv2.imread("white.jpg")
     if white is None:
         return "Error"
+    # CRITICAL: Create independent copy to avoid memory corruption in async context
+    white = white.copy()
     
     os = ((400 - w) // 2) - 15
     os1 = ((400 - h) // 2) - 15
@@ -85,12 +88,15 @@ def predict_sign(image, pts, w, h):
     for i in range(21):
         cv2.circle(white, (pts[i][0] + os, pts[i][1] + os1), 2, (0, 0, 255), 1)
     
-    # Save debug image every 30 frames to see what model is receiving
+    # DEBUG: Save skeleton every ~30 frames for pixel-comparison with final_pred.py
+    # This verifies that preprocessing is pixel-identical between local GUI and backend
     import random
     if random.randint(1, 30) == 1:
-        cv2.imwrite(f"debug_skeleton_{random.randint(1000,9999)}.jpg", white)
+        debug_filename = f"debug_backend_skeleton_{random.randint(1000,9999)}.jpg"
+        cv2.imwrite(debug_filename, white)
+        print(f"[DEBUG] Saved skeleton: {debug_filename}")
     
-    # Predict using model
+    # Predict using model (UNCHANGED)
     white = white.reshape(1, 400, 400, 3)
     prob = np.array(model.predict(white, verbose=0)[0], dtype='float32')
     ch1 = int(np.argmax(prob, axis=0))
@@ -511,7 +517,11 @@ async def recognize_sign(file: UploadFile = File(...)):
         if frame is None:
             raise HTTPException(status_code=400, detail="Invalid image")
         
-        # Flip image (mirror for front camera)
+        # CRITICAL STEP 1: Resize to 640x480 to match final_pred.py webcam resolution
+        # This ensures bounding boxes, landmarks, and rule thresholds are in SAME coordinate space
+        frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_LINEAR)
+        
+        # CRITICAL STEP 2: Horizontal flip to match webcam orientation from final_pred.py
         cv2image = cv2.flip(frame, 1)
         
         # Detect hands
@@ -663,7 +673,13 @@ async def websocket_recognize(websocket: WebSocket):
                     })
                     continue
                 
-                # Flip image (mirror for front camera)
+                # CRITICAL STEP 1: Resize to 640x480 to match final_pred.py webcam resolution
+                # This ensures bounding boxes, landmarks, and rule thresholds are in SAME coordinate space
+                # Without this, Android frames at different resolutions break all distance-based rules
+                frame = cv2.resize(frame, (640, 480), interpolation=cv2.INTER_LINEAR)
+                
+                # CRITICAL STEP 2: Horizontal flip to match webcam orientation from final_pred.py
+                # Webcam shows mirror image; this makes Android frames behave identically
                 cv2image = cv2.flip(frame, 1)
                 
                 # Detect hands
