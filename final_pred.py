@@ -6,6 +6,11 @@ import cv2
 import os, sys
 import traceback
 import pyttsx3
+import threading
+
+# Import mediapipe compatibility layer BEFORE any other imports that use mediapipe
+import mediapipe_compat
+
 from keras.models import load_model
 from cvzone.HandTrackingModule import HandDetector
 from string import ascii_uppercase
@@ -28,6 +33,20 @@ class Application:
 
     def __init__(self):
         self.vs = cv2.VideoCapture(0)
+        # Give the camera time to initialize and check if it works
+        self.vs.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Reduce buffer to get latest frames
+        
+        # Test if camera can read a frame
+        self.use_test_mode = False
+        ret, frame = self.vs.read()
+        if not ret or frame is None:
+            print("WARNING: Camera not accessible. Starting in test mode with blank frames.")
+            print("To use camera mode, connect a camera device and restart the application.")
+            self.use_test_mode = True
+            self.test_frame_count = 0
+        else:
+            print("✓ Camera initialized successfully")
+        
         self.current_image = None
         self.model = load_model('cnn8grps_rad1_model.h5')
         self.speak_engine=pyttsx3.init()
@@ -122,13 +141,26 @@ class Application:
         self.word3 = " "
         self.word4 = " "
 
-        self.video_loop()
+        # Schedule video loop to start after GUI initialization
+        self.root.after(100, self.video_loop)
 
     def video_loop(self):
         try:
-            ok, frame = self.vs.read()
+            if self.use_test_mode:
+                # Create a test frame when no camera is available
+                frame = np.ones((480, 640, 3), dtype=np.uint8) * 200
+                cv2.putText(frame, "NO CAMERA DETECTED", (150, 240), 
+                           cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 3)
+                cv2.putText(frame, "Please connect a camera device", (100, 300),
+                           cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+                ok = True
+            else:
+                ok, frame = self.vs.read()
+            
+            if not ok or frame is None:
+                return
             cv2image = cv2.flip(frame, 1)
-            if cv2image.any:
+            if cv2image is not None and cv2image.size > 0:
                 hands = hd.findHands(cv2image, draw=False, flipType=True)
                 cv2image_copy=np.array(cv2image)
                 cv2image = cv2.cvtColor(cv2image, cv2.COLOR_BGR2RGB)
@@ -145,7 +177,7 @@ class Application:
 
                     white = cv2.imread("white.jpg")
                     # img_final=img_final1=img_final2=0
-                    if image.all:
+                    if image is not None and image.size > 0:
                         handz = hd2.findHands(image, draw=False, flipType=True)
                         self.ccc += 1
                         if handz[0]:
@@ -207,11 +239,24 @@ class Application:
                             self.b4.config(text=self.word4, font=("Courier", 20), wraplength=825,  command=self.action4)
 
                 self.panel5.config(text=self.str, font=("Courier", 30), wraplength=1025)
-        except Exception:
-            print(Exception.__traceback__)
-            hands = hd.findHands(cv2image, draw=False, flipType=True)
-            cv2image_copy=np.array(cv2image)
-            cv2image = cv2.cvtColor(cv2image, cv2.COLOR_BGR2RGB)
+        except Exception as e:
+            print(f"Error in video_loop: {e}")
+            import traceback
+            traceback.print_exc()
+            # Return on exception to allow the loop to continue on next frame
+            return
+        
+        # Schedule the next frame update
+        self.root.after(10, self.video_loop)
+    
+    def _handle_exception_frame(self):
+        """Fallback handler for exceptions during frame processing"""
+        try:
+            if not hasattr(self, 'cv2image') or self.cv2image is None:
+                return
+            hands = hd.findHands(self.cv2image, draw=False, flipType=True)
+            cv2image_copy=np.array(self.cv2image)
+            cv2image = cv2.cvtColor(self.cv2image, cv2.COLOR_BGR2RGB)
             self.current_image = Image.fromarray(cv2image)
             imgtk = ImageTk.PhotoImage(image=self.current_image)
             self.panel.imgtk = imgtk
@@ -330,8 +375,53 @@ class Application:
 
 
     def speak_fun(self):
-        self.speak_engine.say(self.str)
-        self.speak_engine.runAndWait()
+        """Speak the text in a separate thread to avoid blocking"""
+        def speak_thread():
+            try:
+                text_to_speak = self.str.strip()
+                if not text_to_speak or text_to_speak == "":
+                    print("❌ No text to speak")
+                    return
+                
+                print(f"🔊 Speaking: '{text_to_speak}'")
+                
+                # Create a new engine instance for this thread
+                engine = pyttsx3.init()
+                engine.setProperty("rate", 150)
+                
+                # Get available voices
+                voices = engine.getProperty("voices")
+                if voices:
+                    engine.setProperty("voice", voices[0].id)
+                
+                # Speak the text
+                engine.say(text_to_speak)
+                engine.runAndWait()
+                
+                # Clean up
+                engine.stop()
+                del engine
+                
+                print("✓ Speech completed successfully")
+                
+            except Exception as e:
+                print(f"❌ Error in speak function: {e}")
+                traceback.print_exc()
+                
+                # Try Windows native speech as fallback
+                print("Trying Windows native speech...")
+                try:
+                    import subprocess
+                    cmd = f'Add-Type -AssemblyName System.Speech; $synth = New-Object System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak("{text_to_speak}")'
+                    subprocess.run(["PowerShell", "-Command", cmd], 
+                                 capture_output=True, timeout=15, check=True)
+                    print("✓ Windows speech completed")
+                except Exception as e2:
+                    print(f"❌ Fallback speech also failed: {e2}")
+        
+        # Run speech in a separate thread
+        speech_thread = threading.Thread(target=speak_thread, daemon=True)
+        speech_thread.start()
 
 
     def clear_fun(self):
