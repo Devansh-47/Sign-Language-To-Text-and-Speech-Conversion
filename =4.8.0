@@ -1,2 +1,0 @@
-Requirement already satisfied: opencv-contrib-python in /home/krish/enter/envs/tf_gpu/lib/python3.10/site-packages (4.13.0.90)
-Requirement already satisfied: numpy>=2 in /home/krish/enter/envs/tf_gpu/lib/python3.10/site-packages (from opencv-contrib-python) (2.2.6)
