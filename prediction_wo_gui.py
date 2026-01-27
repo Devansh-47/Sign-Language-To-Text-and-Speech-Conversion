@@ -533,4 +533,3 @@ print(set(kok))
 capture.release()
 cv2.destroyAllWindows()
 
-
