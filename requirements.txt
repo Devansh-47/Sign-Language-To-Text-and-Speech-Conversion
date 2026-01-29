@@ -1,0 +1,9 @@
+torch
+numpy
+scikit-learn
+fastapi
+uvicorn
+pydantic
+python-multipart
+requests
+onnxruntime
