@@ -10,7 +10,8 @@
 
 **A Real-Time AI Sign Language Recognition System**
 
-[**⬇️ Download Latest APK**](https://github.com/krish-rRay23/HandSpeak.ai/blob/main/app-release.apk)
+[**⬇️ Download Latest APK**]([https://github.com/krish-rRay23/HandSpeak.ai/blob/main/app-release.apk](https://github.com/krish-rRay23/HandSpeak.ai/raw/main/app-release.apk
+))
 
 </div>
 
